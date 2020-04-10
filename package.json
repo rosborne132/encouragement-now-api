@@ -1,0 +1,28 @@
+{
+    "name": "encouragement-now-api",
+    "version": "1.0.0",
+    "description": "A serverless api for spreading positivity",
+    "author": "Robert Osborne",
+    "license": "MIT",
+    "repository": "https://github.com/rosborne132/encouragement-now-api",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "serverless": "^1.67.3"
+    },
+    "devDependencies": {
+        "eslint": "^6.2.2",
+        "eslint-plugin-prettier": "^3.1.2",
+        "eslint-config-prettier": "^6.1.0",
+        "husky": "^3.1.0",
+        "prettier": "^2.0.4",
+        "pretty-quick": "^2.0.1",
+        "serverless-offline": "^6.1.4"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged --pattern '**/*.*js'"
+        }
+    }
+}
