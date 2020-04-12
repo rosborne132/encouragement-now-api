@@ -6,21 +6,27 @@
     "license": "MIT",
     "repository": "https://github.com/rosborne132/encouragement-now-api",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "mocha --require ts-node/register ./src/**/*.spec.ts"
     },
     "dependencies": {
         "serverless": "^1.67.3"
     },
     "devDependencies": {
+        "@types/chai": "^4.2.11",
+        "@types/mocha": "^7.0.2",
         "@types/node": "^13.11.1",
+        "chai": "^4.2.0",
         "eslint": "^6.2.2",
         "eslint-config-prettier": "^6.1.0",
         "eslint-plugin-prettier": "^3.1.2",
         "husky": "^3.1.0",
+        "mocha": "^7.1.1",
         "prettier": "^2.0.4",
         "pretty-quick": "^2.0.1",
         "serverless-offline": "^6.1.4",
+        "serverless-plugin-optimize": "^4.1.4-rc.1",
         "serverless-plugin-typescript": "^1.1.9",
+        "ts-node": "^8.8.2",
         "typescript": "^3.8.3"
     },
     "husky": {

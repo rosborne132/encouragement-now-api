@@ -1,8 +1,9 @@
 service: encouragement-now-api
 
 plugins:
-    - serverless-plugin-typescript
     - serverless-offline
+    - serverless-plugin-optimize
+    - serverless-plugin-typescript
 
 provider:
     name: aws
@@ -38,6 +39,16 @@ functions:
                   path: hello
                   method: get
                   integration: lambda-proxy
+    sendText:
+        handler: src/lambdas/sendText/handler.handler
+        events:
+            - http:
+                  path: sendtext
+                  method: post
+                  integration: lambda-proxy
+        environment:
+            ACCOUNT_SID: http://example.com/api/v1
+            AUTH_TOKEN: TEST
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
@@ -73,8 +84,4 @@ functions:
 #          conditions:
 #            host: example.com
 #            path: /hello
-
-#    Define function environment variables here
-#    environment:
-#      variable2: value2
 
