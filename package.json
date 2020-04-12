@@ -9,7 +9,9 @@
         "test": "mocha --require ts-node/register ./src/**/*.spec.ts"
     },
     "dependencies": {
-        "serverless": "^1.67.3"
+        "axios": "^0.19.2",
+        "serverless": "^1.67.3",
+        "twilio": "^3.42.1"
     },
     "devDependencies": {
         "@types/chai": "^4.2.11",
@@ -23,6 +25,7 @@
         "mocha": "^7.1.1",
         "prettier": "^2.0.4",
         "pretty-quick": "^2.0.1",
+        "serverless-dotenv-plugin": "^2.3.2",
         "serverless-offline": "^6.1.4",
         "serverless-plugin-optimize": "^4.1.4-rc.1",
         "serverless-plugin-typescript": "^1.1.9",

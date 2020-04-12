@@ -4,12 +4,23 @@ plugins:
     - serverless-offline
     - serverless-plugin-optimize
     - serverless-plugin-typescript
+    - serverless-dotenv-plugin
 
 provider:
     name: aws
     runtime: nodejs12.x
     stage: dev
     region: us-west-2
+
+custom:
+    dotenv:
+        path: ./.env
+        logging: false
+        include:
+            - ACCOUNT_SID
+            - AUTH_TOKEN
+            - GIPHY_KEY
+            - PHONE_NUMBER
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -47,8 +58,10 @@ functions:
                   method: post
                   integration: lambda-proxy
         environment:
-            ACCOUNT_SID: http://example.com/api/v1
-            AUTH_TOKEN: TEST
+            ACCOUNT_SID: ${env:ACCOUNT_SID}
+            AUTH_TOKEN: ${env:AUTH_TOKEN}
+            GIPHY_KEY: ${env:GIPHY_KEY}
+            PHONE_NUMBER: ${env:PHONE_NUMBER}
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
