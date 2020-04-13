@@ -22,7 +22,7 @@ export const sendText = async ({ name, phone, text }: textMsg) => {
     const txtMsg = {
         body: message,
         from: `+1${process.env.PHONE_NUMBER}`,
-        mediaUrl: [data.data.data.url],
+        mediaUrl: [data.data.data.fixed_width_downsampled_url],
         to: `+1${phone}`
     }
 
