@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { checkReqBody } from '../../helpers'
 import { textMsg } from '../../types'
+
 const client = require('twilio')(
     process.env.ACCOUNT_SID,
     process.env.AUTH_TOKEN

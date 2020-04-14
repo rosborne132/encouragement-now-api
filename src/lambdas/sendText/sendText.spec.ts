@@ -2,17 +2,17 @@ import { expect } from 'chai'
 import { sendText } from './sendText'
 
 describe('sendText', () => {
-    it('check for successful response', async () => {
+    it('check for failed response', async () => {
         const msg = {
             name: 'Test',
-            phone: '5555555555',
+            phone: `+1${process.env.SENDER_PHONE_NUMBER}`,
             text: 'Failed response'
         }
 
         const expectedResponse = {
-            statusCode: 200,
+            statusCode: 400,
             body:
-                '{"userMsg":{"name":"Test","phone":"5555555555","text":"Failed response"}}'
+                '{"message":"The From phone number +16692732451 is not a valid, SMS-capable inbound phone number or short code for your account."}'
         }
 
         const response = await sendText(msg)

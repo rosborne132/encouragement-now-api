@@ -43,13 +43,16 @@ custom:
 #    variable1: value1
 
 functions:
-    hello:
-        handler: src/lambdas/hello/handler.hello
+    registerUser:
+        handler: src/lambdas/registerUser/handler.handler
         events:
             - http:
-                  path: hello
-                  method: get
+                  path: registeruser
+                  method: post
                   integration: lambda-proxy
+        environment:
+            ACCOUNT_SID: ${env:ACCOUNT_SID}
+            AUTH_TOKEN: ${env:AUTH_TOKEN}
     sendText:
         handler: src/lambdas/sendText/handler.handler
         events:
