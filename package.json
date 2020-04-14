@@ -6,8 +6,7 @@
     "license": "MIT",
     "repository": "https://github.com/rosborne132/encouragement-now-api",
     "scripts": {
-        "dev": "NODE_ENV=development sls offline",
-        "test": "NODE_ENV=testing mocha --require ts-node/register ./src/setup.ts ./src/**/*.spec.ts"
+        "test": "mocha --require ts-node/register ./src/setup.ts ./src/**/*.spec.ts"
     },
     "dependencies": {
         "axios": "^0.19.2",
@@ -37,7 +36,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "pretty-quick --staged --pattern '**/*.*js'"
+            "pre-commit": "pretty-quick --staged --pattern './src/**/*.ts'"
         }
     }
 }
