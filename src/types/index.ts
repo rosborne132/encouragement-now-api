@@ -1,2 +1,2 @@
-export * from './msg/msg';
-export * from './user/user';
+export * from './msg/msg'
+export * from './user/user'
