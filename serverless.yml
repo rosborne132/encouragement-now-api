@@ -14,7 +14,7 @@ provider:
     tracing:
         lambda: true
     environment:
-        DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}-users
+        DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}-user
     iamRoleStatements:
         - Effect: Allow
           Action:
@@ -40,19 +40,14 @@ resources:
     Resources:
         UserPhoneTable:
             Type: 'AWS::DynamoDB::Table'
-            DeletionPolicy: Retain
             Properties:
                 TableName: ${self:provider.environment.DYNAMODB_TABLE}
                 AttributeDefinitions:
-                    - AttributeName: userId
-                      AttributeType: S
                     - AttributeName: phone
                       AttributeType: S
                 KeySchema:
-                    - AttributeName: userId
-                      KeyType: HASH
                     - AttributeName: phone
-                      KeyType: RANGE
+                      KeyType: HASH
                 ProvisionedThroughput:
                     ReadCapacityUnits: 1
                     WriteCapacityUnits: 1

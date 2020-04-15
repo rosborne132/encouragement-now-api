@@ -39,3 +39,22 @@ export const putUser = async ({ name, phone }: user) => {
         return { name, phone }
     }
 }
+
+export const deleteUser = async ({ phone }: user) => {
+    const params = {
+        TableName: process.env.DYNAMODB_TABLE,
+        Key: {
+            phone
+        },
+        ConditionExpression: 'phone = :phone',
+        ExpressionAttributeValues: {
+            ':phone': phone
+        }
+    }
+
+    try {
+        await docClient.delete(params).promise()
+    } catch (err) {
+        console.error(err)
+    }
+}
