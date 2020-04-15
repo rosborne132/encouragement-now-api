@@ -1,5 +1,5 @@
 export type textMsg = {
-    name: string
+    name?: string
     phone: string
     text: string
 }

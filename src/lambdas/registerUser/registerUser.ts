@@ -1,8 +1,7 @@
 import { checkReqBody } from '../../util/helpers'
 import { client } from '../../util/modules'
-import { getUser } from '../../services'
+import { getUser, putUser } from '../../services'
 import { user } from '../../types'
-
 import { sendText } from '../sendText/sendText'
 
 export const registerUser = async ({ name, phone }: user) => {
@@ -25,17 +24,21 @@ export const registerUser = async ({ name, phone }: user) => {
             }
         }
 
-        // Check if user already exists
         const user = await getUser(phone)
 
         if (user.length) {
-            // User already exist
             const msg = { name, phone, text: 'You are already in our system!' }
+
             results = await sendText(msg)
         } else {
-            // User doesn't exist
-            // If user doesn't exist. Create user and send text -> "Thanks for signing up!"
-            console.log('User is not in our system')
+            const newUser = await putUser({ name, phone })
+            const msg = {
+                ...newUser,
+                text:
+                    'Welcome to Encouragement Now! Enjoy the kind words of others!'
+            }
+
+            results = await sendText(msg)
         }
 
         return results

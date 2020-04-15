@@ -1,5 +1,6 @@
-import uuid from 'uuid'
+import { v4 as uuid } from 'uuid'
 import { dbClient, docClient, parseData } from '../../util/modules'
+import { user } from '../../types'
 
 export const getUser = async (phone: string) => {
     const params = {
@@ -18,4 +19,23 @@ export const getUser = async (phone: string) => {
     const { Items } = await dbClient.query(params).promise()
 
     return Items.map(item => parseData.unmarshall(item))
+}
+
+export const putUser = async ({ name, phone }: user) => {
+    const params = {
+        TableName: process.env.DYNAMODB_TABLE,
+        Item: {
+            userId: uuid(),
+            name,
+            phone
+        }
+    }
+    try {
+        await docClient.put(params).promise()
+    } catch (err) {
+        console.error(err)
+    } finally {
+        const { name, phone } = params.Item
+        return { name, phone }
+    }
 }
