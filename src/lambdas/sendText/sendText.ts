@@ -1,10 +1,7 @@
 import axios from 'axios'
-import { checkReqBody } from '../../helpers'
+import { checkReqBody } from '../../util/helpers'
+import { client } from '../../util/modules'
 import { textMsg } from '../../types'
-const client = require('twilio')(
-    process.env.ACCOUNT_SID,
-    process.env.AUTH_TOKEN
-)
 
 export const sendText = async ({ name, phone, text }: textMsg) => {
     const errResopnse = checkReqBody({ name, phone, text })
