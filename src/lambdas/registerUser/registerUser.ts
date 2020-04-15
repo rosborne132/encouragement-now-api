@@ -1,13 +1,9 @@
-import { checkReqBody } from '../../helpers'
+import { checkReqBody } from '../../util/helpers'
+import { client } from '../../util/modules'
+import { getUser } from '../../services'
 import { user } from '../../types'
-// import { config } from '../../config'
 
-// const client = require('twilio')(config.ACCOUNT_SID, config.AUTH_TOKEN)
-
-const client = require('twilio')(
-    process.env.ACCOUNT_SID,
-    process.env.AUTH_TOKEN
-)
+import { sendText } from '../sendText/sendText'
 
 export const registerUser = async ({ name, phone }: user) => {
     const errResopnse = checkReqBody({ name, phone })
@@ -17,6 +13,7 @@ export const registerUser = async ({ name, phone }: user) => {
     }
 
     try {
+        let results
         const phoneType = await client.lookups
             .phoneNumbers(phone)
             .fetch({ type: ['carrier'] })
@@ -28,14 +25,20 @@ export const registerUser = async ({ name, phone }: user) => {
             }
         }
 
-        // const response = await client.messages.create(txtMsg)
-        // return {
-        //     statusCode: 200,
-        //     body: JSON.stringify({
-        //         message: 'Message sent!',
-        //         messagesid: response.sid
-        //     })
-        // }
+        // Check if user already exists
+        const user = await getUser(phone)
+
+        if (user.length) {
+            // User already exist
+            const msg = { name, phone, text: 'You are already in our system!' }
+            results = await sendText(msg)
+        } else {
+            // User doesn't exist
+            // If user doesn't exist. Create user and send text -> "Thanks for signing up!"
+            console.log('User is not in our system')
+        }
+
+        return results
     } catch (err) {
         return {
             statusCode: 400,
