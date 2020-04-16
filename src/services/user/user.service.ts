@@ -21,6 +21,18 @@ export const getUser = async (phone: string) => {
     return Items.map(item => parseData.unmarshall(item))
 }
 
+export const getUsers = async () => {
+    const params = {
+        TableName: process.env.DYNAMODB_TABLE,
+        AttributesToGet: ['phone', 'name'],
+        Limit: 10
+    }
+
+    const { Items } = await docClient.scan(params).promise()
+
+    return Items
+}
+
 export const putUser = async ({ name, phone }: user) => {
     const params = {
         TableName: process.env.DYNAMODB_TABLE,
@@ -28,7 +40,6 @@ export const putUser = async ({ name, phone }: user) => {
             channelName: 'SMS',
             name,
             phone,
-            receiveText: true,
             userId: uuid()
         }
     }
