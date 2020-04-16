@@ -1,7 +1,7 @@
 import { checkReqBody } from '../../util/helpers'
 import { client } from '../../util/modules'
 import { getUser, putUser } from '../../services'
-import { user } from '../../types'
+import { user, textMsg } from '../../types'
 import { sendText } from '../sendText/sendText'
 
 export const registerUser = async ({ name, phone }: user) => {
@@ -27,7 +27,11 @@ export const registerUser = async ({ name, phone }: user) => {
         const user = await getUser(phone)
 
         if (user.length) {
-            const msg = { name, phone, text: 'You are already in our system!' }
+            const msg = {
+                name,
+                phone,
+                text: 'You are already in our system!'
+            } as textMsg
 
             results = await sendText(msg)
         } else {
@@ -36,7 +40,7 @@ export const registerUser = async ({ name, phone }: user) => {
                 ...newUser,
                 text:
                     'Welcome to Encouragement Now! Enjoy the kind words of others!'
-            }
+            } as textMsg
 
             results = await sendText(msg)
         }
