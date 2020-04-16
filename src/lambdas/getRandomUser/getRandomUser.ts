@@ -4,7 +4,7 @@ import { textMsg } from '../../types'
 import { sendText } from '../sendText/sendText'
 
 export const getRandomUser = async (text: string) => {
-    const errResopnse = checkReqBody({ text })
+    const errResopnse = await checkReqBody({ text })
 
     if (errResopnse !== undefined) {
         return errResopnse
