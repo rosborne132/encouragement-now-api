@@ -14,7 +14,9 @@ provider:
     tracing:
         lambda: true
     environment:
-        DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}-user
+        ACCOUNT_SID: ${env:ACCOUNT_SID}
+        AUTH_TOKEN: ${env:AUTH_TOKEN}
+        DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}-users
     iamRoleStatements:
         - Effect: Allow
           Action:
@@ -43,12 +45,10 @@ resources:
             Properties:
                 TableName: ${self:provider.environment.DYNAMODB_TABLE}
                 AttributeDefinitions:
-                    - AttributeName: channelName
-                      AttributeType: S
                     - AttributeName: phone
                       AttributeType: S
                 KeySchema:
-                    - AttributeName: channelName
+                    - AttributeName: phone
                       KeyType: HASH
                 ProvisionedThroughput:
                     ReadCapacityUnits: 1
@@ -69,9 +69,6 @@ functions:
     registerUser:
         handler: src/lambdas/registerUser/handler.handler
         tracing: Active
-        environment:
-            ACCOUNT_SID: ${env:ACCOUNT_SID}
-            AUTH_TOKEN: ${env:AUTH_TOKEN}
         events:
             - http:
                   path: registeruser
@@ -82,13 +79,20 @@ functions:
         handler: src/lambdas/sendText/handler.handler
         tracing: PassThrough
         environment:
-            ACCOUNT_SID: ${env:ACCOUNT_SID}
-            AUTH_TOKEN: ${env:AUTH_TOKEN}
             GIPHY_KEY: ${env:GIPHY_KEY}
             PHONE_NUMBER: ${env:PHONE_NUMBER}
         events:
             - http:
                   path: sendtext
+                  method: post
+                  integration: lambda-proxy
+                  cors: true
+    getRandomUser:
+        handler: src/lambdas/getRandomUser/handler.handler
+        tracing: Active
+        events:
+            - http:
+                  path: randomuser
                   method: post
                   integration: lambda-proxy
                   cors: true
