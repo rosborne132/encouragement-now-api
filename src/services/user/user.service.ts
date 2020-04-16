@@ -6,7 +6,7 @@ export const getUser = async (phone: string) => {
     const params = {
         TableName: process.env.DYNAMODB_TABLE,
         IndexName: 'phone-index',
-        ProjectionExpression: 'userId, phone, username',
+        ProjectionExpression: 'userId, phone',
         KeyConditionExpression: '#phone = :v_phone',
         ExpressionAttributeNames: {
             '#phone': 'phone'
@@ -25,11 +25,14 @@ export const putUser = async ({ name, phone }: user) => {
     const params = {
         TableName: process.env.DYNAMODB_TABLE,
         Item: {
-            userId: uuid(),
+            channelName: 'SMS',
             name,
-            phone
+            phone,
+            receiveText: true,
+            userId: uuid()
         }
     }
+
     try {
         await docClient.put(params).promise()
     } catch (err) {
@@ -44,7 +47,7 @@ export const deleteUser = async ({ phone }: user) => {
     const params = {
         TableName: process.env.DYNAMODB_TABLE,
         Key: {
-            phone
+            channelName: 'SMS'
         },
         ConditionExpression: 'phone = :phone',
         ExpressionAttributeValues: {

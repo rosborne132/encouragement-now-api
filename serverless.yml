@@ -43,10 +43,12 @@ resources:
             Properties:
                 TableName: ${self:provider.environment.DYNAMODB_TABLE}
                 AttributeDefinitions:
+                    - AttributeName: channelName
+                      AttributeType: S
                     - AttributeName: phone
                       AttributeType: S
                 KeySchema:
-                    - AttributeName: phone
+                    - AttributeName: channelName
                       KeyType: HASH
                 ProvisionedThroughput:
                     ReadCapacityUnits: 1
