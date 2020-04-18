@@ -3,7 +3,6 @@ service: encouragement-now-api
 plugins:
     - serverless-dotenv-plugin
     - serverless-offline
-    - serverless-plugin-optimize
     - serverless-plugin-typescript
 
 provider:
@@ -21,12 +20,17 @@ provider:
         - Effect: Allow
           Action:
               - dynamodb:Query
-              - dynamodb:Scan
-              - dynamodb:GetItem
               - dynamodb:PutItem
-              - dynamodb:UpdateItem
               - dynamodb:DeleteItem
+              - dynamodb:Scan
           Resource: 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}'
+        - Effect: Allow
+          Action:
+              - sqs:DeleteMessage
+              - sqs:GetQueueAttributes
+              - sqs:ReceiveMessage
+              - sqs:SendMessage
+          Resource: 'arn:aws:sqs:us-west-2:280138148799:user_queue.fifo'
 
 custom:
     dotenv:
@@ -90,9 +94,6 @@ functions:
     getRandomUser:
         handler: src/lambdas/getRandomUser/handler.handler
         tracing: Active
+        reservedConcurrency: 10
         events:
-            - http:
-                  path: randomuser
-                  method: post
-                  integration: lambda-proxy
-                  cors: true
+            - sqs: arn:aws:sqs:us-west-2:280138148799:user_queue.fifo
