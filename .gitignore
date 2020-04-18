@@ -28,6 +28,8 @@ build/Release
 .build
 .dynamodb
 .terraform
+terraform.tfstate
+terraform.tfstate.backup
 
 # Dependency directories
 node_modules
