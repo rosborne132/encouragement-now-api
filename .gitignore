@@ -27,6 +27,7 @@ coverage
 build/Release
 .build
 .dynamodb
+.terraform
 
 # Dependency directories
 node_modules
