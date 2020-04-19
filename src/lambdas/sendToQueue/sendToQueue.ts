@@ -1,5 +1,6 @@
 import { client } from '../../util/modules'
 import { getStrValue } from '../../util/helpers'
+const badwordsArray = require('badwords/array')
 
 export const sendToQueue = async (msg: string) => {
     const message = await getStrValue(msg, 'Body')
@@ -15,4 +16,15 @@ export const sendToQueue = async (msg: string) => {
             body: JSON.stringify({ message: 'Not a valid cell phone' })
         }
     }
+
+    if (badwordsArray.includes(message.toLowerCase())) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ message: 'Message contains profanity' })
+        }
+    }
+
+    console.log(badwordsArray.includes(message.toLowerCase()))
+
+    // Send message to queue
 }
