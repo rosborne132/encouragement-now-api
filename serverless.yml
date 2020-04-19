@@ -81,6 +81,7 @@ functions:
                   cors: true
     sendToQueue:
         handler: src/lambdas/sendToQueue/handler.handler
+        tracing: Active
         events:
             - http:
                   path: sendtoqueue

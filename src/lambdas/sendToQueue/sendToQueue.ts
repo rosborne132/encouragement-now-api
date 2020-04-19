@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid'
 const badwordsArray = require('badwords/array')
 const queryString = require('query-string')
 
