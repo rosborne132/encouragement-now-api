@@ -1,13 +1,14 @@
-import { client } from '../../util/modules'
-import { getStrValue } from '../../util/helpers'
+import { v4 as uuid } from 'uuid'
 const badwordsArray = require('badwords/array')
+const queryString = require('query-string')
+
+import { client, sqs } from '../../util/modules'
 
 export const sendToQueue = async (msg: string) => {
-    const message = await getStrValue(msg, 'Body')
-    const phoneNum = await getStrValue(msg, 'To').replace('%2B1', '')
+    const messageJson = queryString.parse(msg)
 
     const phoneType = await client.lookups
-        .phoneNumbers(phoneNum)
+        .phoneNumbers(messageJson.From)
         .fetch({ type: ['carrier'] })
 
     if (phoneType.carrier.type !== 'mobile') {
@@ -17,14 +18,31 @@ export const sendToQueue = async (msg: string) => {
         }
     }
 
-    if (badwordsArray.includes(message.toLowerCase())) {
+    const wordCheck = messageJson.Body.split(' ').filter(word =>
+        badwordsArray.includes(word.toLowerCase())
+    )
+
+    if (wordCheck.length) {
         return {
             statusCode: 400,
             body: JSON.stringify({ message: 'Message contains profanity' })
         }
     }
 
-    console.log(badwordsArray.includes(message.toLowerCase()))
+    try {
+        const params = {
+            MessageBody: messageJson.Body,
+            MessageDeduplicationId: messageJson.From,
+            MessageGroupId: 'UserMessage',
+            QueueUrl:
+                'https://sqs.us-west-2.amazonaws.com/280138148799/user_queue.fifo'
+        }
 
-    // Send message to queue
+        return await sqs.sendMessage(params).promise()
+    } catch (err) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ message: err.message })
+        }
+    }
 }

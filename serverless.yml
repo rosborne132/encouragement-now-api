@@ -79,18 +79,6 @@ functions:
                   method: post
                   integration: lambda-proxy
                   cors: true
-    sendText:
-        handler: src/lambdas/sendText/handler.handler
-        tracing: PassThrough
-        environment:
-            GIPHY_KEY: ${env:GIPHY_KEY}
-            PHONE_NUMBER: ${env:PHONE_NUMBER}
-        events:
-            - http:
-                  path: sendtext
-                  method: post
-                  integration: lambda-proxy
-                  cors: true
     sendToQueue:
         handler: src/lambdas/sendToQueue/handler.handler
         events:

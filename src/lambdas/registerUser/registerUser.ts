@@ -1,8 +1,7 @@
-import { checkReqBody } from '../../util/helpers'
+import { checkReqBody, sendText } from '../../util/helpers'
 import { client } from '../../util/modules'
 import { getUser, putUser } from '../../services'
 import { user, textMsg } from '../../types'
-import { sendText } from '../sendText/sendText'
 
 export const registerUser = async ({ name, phone }: user) => {
     const errResopnse = checkReqBody({ name, phone })

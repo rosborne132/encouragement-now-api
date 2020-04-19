@@ -4,7 +4,7 @@ import { sendToQueue } from './sendToQueue'
 describe('sendToQueue', () => {
     it('confirm message is rejected if it contains profanity', async () => {
         const textBody = {
-            body: `Body=xrated&To=%2B1${process.env.SENDER_PHONE_NUMBER}`
+            body: `Body=xrated+title&From=%2B1${process.env.SENDER_PHONE_NUMBER}`
         }
 
         const expectedResponse = {

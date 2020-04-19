@@ -1,7 +1,6 @@
-import { checkReqBody, getRandomInt } from '../../util/helpers'
+import { checkReqBody, getRandomInt, sendText } from '../../util/helpers'
 import { getUsers } from '../../services'
 import { textMsg } from '../../types'
-import { sendText } from '../sendText/sendText'
 
 export const getRandomUser = async (text: string) => {
     const errResopnse = await checkReqBody({ text })

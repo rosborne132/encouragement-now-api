@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { checkReqBody } from '../../util/helpers'
-import { client } from '../../util/modules'
-import { textMsg } from '../../types'
+import { checkReqBody } from '../checkReqBody/checkReqBody'
+import { client } from '../../modules'
+import { textMsg } from '../../../types'
 
 export const sendText = async ({ name, phone, text }: textMsg) => {
     const errResopnse = checkReqBody({ name, phone, text })
