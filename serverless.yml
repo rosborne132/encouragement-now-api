@@ -91,6 +91,14 @@ functions:
                   method: post
                   integration: lambda-proxy
                   cors: true
+    sendToQueue:
+        handler: src/lambdas/sendToQueue/handler.handler
+        events:
+            - http:
+                  path: sendtoqueue
+                  method: post
+                  integration: lambda-proxy
+                  cors: true
     getRandomUser:
         handler: src/lambdas/getRandomUser/handler.handler
         tracing: Active
