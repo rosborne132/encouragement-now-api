@@ -1,0 +1,54 @@
+version: 2
+
+defaults: &defaults
+    working_directory: ~/repo
+    docker:
+        - image: circleci/node:10.13
+
+jobs:
+    build-and-test:
+        <<: *defaults
+        steps:
+            - checkout
+            - restore_cache:
+                  keys:
+                      - v1-dependencies-{{ checksum "package.json" }}
+                      - v1-dependencies-
+            - run:
+                  name: Install Serverless CLI and dependencies
+                  command: |
+                      sudo npm i -g serverless
+                      npm install
+                      sudo apt-get install awscli
+            - save_cache:
+                  paths:
+                      - node_modules
+                  key: v1-dependencies-{{ checksum "package.json" }}
+            - run:
+                  name: Run Tests
+                  command: npm run test
+            - persist_to_workspace:
+                  root: ~/repo
+                  paths: .
+    deploy:
+        <<: *defaults
+        steps:
+            - attach_workspace:
+                  at: ~/repo
+            - run:
+                  name: Deploy application
+                  command: sls deploy --stage production
+
+workflows:
+    version: 2
+
+    cd-pipeline:
+        jobs:
+            - build-and-test
+            - hold-for-approval:
+                  type: approval
+                  requires:
+                      - build-and-test
+            - deploy:
+                  requires:
+                      - hold-for-approval
