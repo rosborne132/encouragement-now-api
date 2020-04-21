@@ -1,78 +1,13 @@
-# version: 2
-
-# defaults: &defaults
-#     working_directory: ~/repo
-#     docker:
-#         - image: circleci/node:10.13
-
-# jobs:
-#     build-and-test:
-#         <<: *defaults
-#         steps:
-#             - checkout
-#             - restore_cache:
-#                   keys:
-#                       - v1-dependencies-{{ checksum "package.json" }}
-#                       - v1-dependencies-
-#             - run:
-#                   name: Install Serverless CLI and dependencies
-#                   command: |
-#                       npm i -g serverless
-#                       npm install
-#                       sudo apt-get install awscli
-#             - run:
-#                   name: Configure AWS Access Key ID
-#                   command: |
-#                       aws configure set aws_access_key_id \
-#                       $AWS_ACCESS_KEY_ID
-#             - run:
-#                   name: Configure AWS Secret Access Key
-#                   command: |
-#                       aws configure set aws_secret_access_key \
-#                       $AWS_SECRET_ACCESS_KEY
-#             - save_cache:
-#                   paths:
-#                       - node_modules
-#                   key: v1-dependencies-{{ checksum "package.json" }}
-#             - run:
-#                   name: Run Tests
-#                   command: npm run test
-#             - persist_to_workspace:
-#                   root: ~/repo
-#                   paths: .
-#     deploy:
-#         <<: *defaults
-#         steps:
-#             - attach_workspace:
-#                   at: ~/repo
-#             - run:
-#                   name: Deploy application
-#                   command: serverless deploy --stage prod
-
-# workflows:
-#     version: 2
-
-#     cd-pipeline:
-#         jobs:
-#             - build-and-test
-#             - hold-for-approval:
-#                   type: approval
-#                   requires:
-#                       - build-and-test
-#             - deploy:
-#                   requires:
-#                       - hold-for-approval
-
 version: 2.1
 orbs:
     aws-cli: circleci/aws-cli@0.1.18
 
 jobs:
-    build-and-test:
+    build-and-deploy:
+        executor: aws-cli/default
         working_directory: ~/repo
         docker:
             - image: node:10.15.3
-        executor: aws-cli/default
         steps:
             - checkout
             - restore_cache:
@@ -97,30 +32,9 @@ jobs:
             - persist_to_workspace:
                   root: ~/repo
                   paths: .
-    # deploy:
-    #     executor: aws-cli/default
-    #     steps:
-    #         - attach_workspace:
-    #               at: .
-    #         - aws-cli/setup:
-    #               profile-name: default
-    #         - run:
-    #               name: Install Serverless CLI
-    #               command: npm install -g serverless
-    #         - run:
-    #               name: Deploy application
-    #               command: serverless deploy --stage prod
 
 workflows:
     aws-cli:
         jobs:
-            - build-and-test:
+            - build-and-deploy:
                   context: aws-context
-            # - hold-for-approval:
-            #       type: approval
-            #       requires:
-            #           - build-and-test
-            # - deploy:
-            #       context: aws-context
-            #       requires:
-            #           - hold-for-approval
