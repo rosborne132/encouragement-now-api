@@ -1,100 +1,64 @@
-# version: 2
+version: 2
 
-# defaults: &defaults
-#     working_directory: ~/repo
-#     docker:
-#         - image: circleci/node:10.13
+defaults: &defaults
+    working_directory: ~/repo
+    docker:
+        - image: circleci/node:10.13
 
-# jobs:
-#     build-and-test:
-#         <<: *defaults
-#         steps:
-#             - checkout
-#             - restore_cache:
-#                   keys:
-#                       - v1-dependencies-{{ checksum "package.json" }}
-#                       - v1-dependencies-
-#             - run:
-#                   name: Install Serverless CLI and dependencies
-#                   command: |
-#                       sudo npm i -g serverless
-#                       npm install
-#                       sudo apt-get install awscli
-#             - run:
-#                   name: Configure AWS Access Key ID
-#                   command: |
-#                       aws configure set aws_access_key_id \
-#                       $AWS_ACCESS_KEY_ID
-#             - run:
-#                   name: Configure AWS Secret Access Key
-#                   command: |
-#                       aws configure set aws_secret_access_key \
-#                       $AWS_SECRET_ACCESS_KEY
-#             - save_cache:
-#                   paths:
-#                       - node_modules
-#                   key: v1-dependencies-{{ checksum "package.json" }}
-#             - run:
-#                   name: Run Tests
-#                   command: npm run test
-#             - persist_to_workspace:
-#                   root: ~/repo
-#                   paths: .
-#     deploy:
-#         <<: *defaults
-#         steps:
-#             - attach_workspace:
-#                   at: ~/repo
-#             - run:
-#                   name: Deploy application
-#                   command: sls deploy --stage prod
-
-# workflows:
-#     version: 2
-
-#     cd-pipeline:
-#         jobs:
-#             - build-and-test
-#             - hold-for-approval:
-#                   type: approval
-#                   requires:
-#                       - build-and-test
-#             - deploy:
-#                   requires:
-#                       - hold-for-approval
-
-version: 2.1
-
-orbs:
-    serverless: airswap/serverless@0.0.2
-
-description: |
-    Install and deploy a serverless website, including a custom domain
-
-commands:
-    install:
-        description: |
-            Install serverless framework
-
+jobs:
+    build-and-test:
+        <<: *defaults
         steps:
+            - checkout
+            - restore_cache:
+                  keys:
+                      - v1-dependencies-{{ checksum "package.json" }}
+                      - v1-dependencies-
             - run:
-                  name: Installing Serverless framework
-                  command: sudo npm i -g serverless
-
-    deploy:
-        description: |
-            Deploy the serverless website, including a flag for a custom domain
-            setup before deployment
-
-        parameters:
-            env:
-                description: The environment variable
-                type: string
-                default: ${ENV}
-
-        steps:
-            - run:
-                  name: Deploying Serverless stack
+                  name: Install Serverless CLI and dependencies
                   command: |
-                      echo "Deploying for $ENV"
-                      serverless deploy
+                      sudo npm i -g serverless
+                      npm install
+                      sudo apt-get install awscli
+            - run:
+                  name: Configure AWS Access Key ID
+                  command: |
+                      aws configure set aws_access_key_id \
+                      $AWS_ACCESS_KEY_ID
+            - run:
+                  name: Configure AWS Secret Access Key
+                  command: |
+                      aws configure set aws_secret_access_key \
+                      $AWS_SECRET_ACCESS_KEY
+            - save_cache:
+                  paths:
+                      - node_modules
+                  key: v1-dependencies-{{ checksum "package.json" }}
+            - run:
+                  name: Run Tests
+                  command: npm run test
+            - persist_to_workspace:
+                  root: ~/repo
+                  paths: .
+    deploy:
+        <<: *defaults
+        steps:
+            - attach_workspace:
+                  at: ~/repo
+            - run:
+                  name: Deploy application
+                  command: serverless deploy --stage prod
+
+workflows:
+    version: 2
+
+    cd-pipeline:
+        jobs:
+            - build-and-test
+            - hold-for-approval:
+                  type: approval
+                  requires:
+                      - build-and-test
+            - deploy:
+                  requires:
+                      - hold-for-approval
