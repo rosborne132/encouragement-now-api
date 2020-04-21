@@ -80,8 +80,10 @@ jobs:
                       - v1-dependencies-{{ checksum "package.json" }}
                       - v1-dependencies-
             - run:
-                  name: Install Dependencies
-                  command: npm install
+                  name: Install Dependencies & Serverless CLI
+                  command: |
+                      npm install
+                      npm install -g serverless
             - save_cache:
                   paths:
                       - node_modules
