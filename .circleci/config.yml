@@ -1,0 +1,40 @@
+version: 2.1
+orbs:
+    aws-cli: circleci/aws-cli@0.1.18
+
+jobs:
+    build-and-deploy:
+        executor: aws-cli/default
+        working_directory: ~/repo
+        docker:
+            - image: node:10.15.3
+        steps:
+            - checkout
+            - restore_cache:
+                  keys:
+                      - v1-dependencies-{{ checksum "package.json" }}
+                      - v1-dependencies-
+            - run:
+                  name: Install Dependencies & Serverless CLI
+                  command: |
+                      npm install
+                      npm install -g serverless
+            - save_cache:
+                  paths:
+                      - node_modules
+                  key: v1-dependencies-{{ checksum "package.json" }}
+            - run:
+                  name: Run Tests
+                  command: npm run test
+            - run:
+                  name: Deploy application
+                  command: serverless deploy --stage prod
+            - persist_to_workspace:
+                  root: ~/repo
+                  paths: .
+
+workflows:
+    aws-cli:
+        jobs:
+            - build-and-deploy:
+                  context: aws-context
