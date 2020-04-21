@@ -99,9 +99,7 @@ jobs:
             - attach_workspace:
                   at: .
             - aws-cli/setup:
-                  profile-name: circleci_user
-                  aws-access-key-id: $AWS_ACCESS_KEY_ID
-                  aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
+                  profile-name: default
             - run:
                   name: Deploy application
                   command: serverless deploy --stage prod
@@ -115,6 +113,6 @@ workflows:
                   requires:
                       - build-and-test
             - deploy:
-                  context: aws
+                  context: aws-context
                   requires:
                       - hold-for-approval
