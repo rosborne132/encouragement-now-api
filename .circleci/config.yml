@@ -65,8 +65,13 @@
 
 jobs:
     build-and-test:
+        executor: aws-cli/default
         steps:
             - checkout
+            - aws-cli/setup:
+                  profile-name: circleci_user
+                  aws-access-key-id: $AWS_ACCESS_KEY_ID
+                  aws-secret-access-key: $AWS_SECRET_ACCESS_KEY
             - restore_cache:
                   keys:
                       - v1-dependencies-{{ checksum "package.json" }}
