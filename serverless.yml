@@ -16,6 +16,8 @@ provider:
         ACCOUNT_SID: ${env:ACCOUNT_SID}
         AUTH_TOKEN: ${env:AUTH_TOKEN}
         DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}-users
+        GIPHY_KEY: ${env:GIPHY_KEY}
+        SENDER_PHONE_NUMBER: ${env:SENDER_PHONE_NUMBER}
     iamRoleStatements:
         - Effect: Allow
           Action:
