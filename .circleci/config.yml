@@ -79,9 +79,6 @@ jobs:
                       - v1-dependencies-{{ checksum "package.json" }}
                       - v1-dependencies-
             - run:
-                  name: Install Serverless CLI
-                  command: npm install -g serverless
-            - run:
                   name: Install Dependencies
                   command: npm install
             - save_cache:
@@ -101,6 +98,9 @@ jobs:
                   at: .
             - aws-cli/setup:
                   profile-name: default
+            - run:
+                  name: Install Serverless CLI
+                  command: npm install -g serverless
             - run:
                   name: Deploy application
                   command: serverless deploy --stage prod
