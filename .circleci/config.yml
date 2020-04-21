@@ -72,6 +72,7 @@ jobs:
         working_directory: ~/repo
         docker:
             - image: node:10.15.3
+        executor: aws-cli/default
         steps:
             - checkout
             - restore_cache:
@@ -88,32 +89,36 @@ jobs:
             - run:
                   name: Run Tests
                   command: npm run test
-            - persist_to_workspace:
-                  root: ~/repo
-                  paths: .
-    deploy:
-        executor: aws-cli/default
-        steps:
-            - attach_workspace:
-                  at: .
-            - aws-cli/setup:
-                  profile-name: default
-            - run:
-                  name: Install Serverless CLI
-                  command: npm install -g serverless
             - run:
                   name: Deploy application
                   command: serverless deploy --stage prod
+            - persist_to_workspace:
+                  root: ~/repo
+                  paths: .
+    # deploy:
+    #     executor: aws-cli/default
+    #     steps:
+    #         - attach_workspace:
+    #               at: .
+    #         - aws-cli/setup:
+    #               profile-name: default
+    #         - run:
+    #               name: Install Serverless CLI
+    #               command: npm install -g serverless
+    #         - run:
+    #               name: Deploy application
+    #               command: serverless deploy --stage prod
 
 workflows:
     aws-cli:
         jobs:
-            - build-and-test
-            - hold-for-approval:
-                  type: approval
-                  requires:
-                      - build-and-test
-            - deploy:
+            - build-and-test:
                   context: aws-context
-                  requires:
-                      - hold-for-approval
+            # - hold-for-approval:
+            #       type: approval
+            #       requires:
+            #           - build-and-test
+            # - deploy:
+            #       context: aws-context
+            #       requires:
+            #           - hold-for-approval
