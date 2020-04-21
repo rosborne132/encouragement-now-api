@@ -79,13 +79,11 @@ jobs:
                       - v1-dependencies-{{ checksum "package.json" }}
                       - v1-dependencies-
             - run:
-                  name: Install sudo
-                  command: apt-get install -y sudo
+                  name: Install Serverless CLI
+                  command: npm install -g serverless
             - run:
-                  name: Install Serverless CLI and dependencies
-                  command: |
-                      sudo npm i -g serverless
-                      npm install
+                  name: Install Dependencies
+                  command: npm install
             - save_cache:
                   paths:
                       - node_modules
