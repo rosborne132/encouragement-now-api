@@ -29,7 +29,7 @@ cd encouragement-now-api
 
 Sample env file
 
-```
+```env
 ACCOUNT_SID=
 AUTH_TOKEN=
 GIPHY_KEY=
@@ -42,13 +42,13 @@ DYNAMODB_TABLE=
 
 Ensure that you have serverless install globally
 
-```
+```bash
 npm install -g serverless
 ```
 
 After that install the project dependenices
 
-```
+```bash
 npm install
 ```
 
@@ -56,7 +56,7 @@ npm install
 
 First deploy the dev environment
 
-```
+```bash
 sls deploy
 ```
 
@@ -65,7 +65,7 @@ Once this is complete you can update the `DYNAMODB_TABLE` value in your env file
 Start the application by running `sls offline`
 The output should look like this.
 
-```
+```bash
 Serverless: Compiling with Typescript...
 Serverless: Using local tsconfig.json
 Serverless: Typescript compiled.
@@ -87,7 +87,7 @@ offline:
 offline: Enter "rp" to replay the last request
 ```
 
-Update your twilio #'s webhook with url `http://localhost:3000/dev/sendtoqueue`
+Update your twilio #'s webhook with url `http://localhost:3000/dev/sendtoqueue` <br>
 For more information: [Link](https://www.twilio.com/docs/sms/tutorials/how-to-receive-and-reply-python-amazon-lambda)
 
 If you have completed the registeration in the front-end site you should be able to directly text the number
@@ -105,4 +105,5 @@ npm test
 
 ### Cloud deployment
 
-All deployment is handle through serverless.
+All deployment is handle through serverless. <br>
+For more information: [Link](https://www.serverless.com/framework/docs/providers/aws/guide/deploying)
