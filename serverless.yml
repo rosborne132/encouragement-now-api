@@ -80,7 +80,7 @@ functions:
                   path: registeruser
                   method: post
                   integration: lambda-proxy
-                  cors: true
+                  private: true
     sendToQueue:
         handler: src/lambdas/sendToQueue/handler.handler
         tracing: Active
