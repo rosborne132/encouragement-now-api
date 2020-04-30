@@ -2,12 +2,12 @@
 
 I built a serverless application that allows users to text kind words to those that are recovering from COVID-19.
 
-One of the main problems for those recovering from COVID-19 is the isolation from loved ones. You can communicated
+One of the main problems for those recovering from COVID-19 is the isolation from loved ones. You can communicate
 through other means but this application is for those that don't already have a support network.
 
 # Local Environment Setup
 
-If you would like to test the application without setting it up try visiting the live site [Encouragement Now](https://encouragementnow.net/)
+If you would like to test the application without setting it up to try visiting the live site [Encouragement Now](https://encouragementnow.net/)
 
 ### Setup front end site
 
@@ -38,7 +38,7 @@ SENDER_PHONE_NUMBER= (Your phone number, really only used for tests)
 DYNAMODB_TABLE=
 ```
 
-### Install dependenices
+### Install dependencies
 
 Ensure that you have serverless install globally
 
@@ -46,7 +46,7 @@ Ensure that you have serverless install globally
 npm install -g serverless
 ```
 
-After that install the project dependenices
+After that install the project dependencies
 
 ```bash
 npm install
@@ -54,7 +54,7 @@ npm install
 
 # How to run the application locally
 
-First deploy the dev environment
+First, deploy the dev environment
 
 ```bash
 sls deploy
@@ -90,7 +90,7 @@ offline: Enter "rp" to replay the last request
 Update your twilio #'s webhook with url `http://localhost:3000/dev/sendtoqueue` <br>
 For more information: [Link](https://www.twilio.com/docs/sms/tutorials/how-to-receive-and-reply-python-amazon-lambda)
 
-If you have completed the registeration in the front-end site you should be able to directly text the number
+If you have completed the registration in the front-end site you should be able to directly text the number
 ![text](https://res.cloudinary.com/rosborne/image/upload/v1588207636/encouragement-now/text2.png)
 
 Congrats! That's it!
@@ -105,5 +105,5 @@ npm test
 
 ### Cloud deployment
 
-All deployment is handle through serverless. <br>
+All deployments are handled through serverless. <br>
 For more information: [Link](https://www.serverless.com/framework/docs/providers/aws/guide/deploying)
