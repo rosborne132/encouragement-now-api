@@ -9,7 +9,7 @@
         "test": "mocha --require ts-node/register ./src/setup.ts ./src/**/*.spec.ts"
     },
     "dependencies": {
-        "aws-sdk": "^2.656.0",
+        "aws-sdk": "^2.814.0",
         "axios": "^0.19.2",
         "badwords": "^1.0.0",
         "query-string": "^6.12.1",
